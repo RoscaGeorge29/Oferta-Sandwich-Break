@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sandwich Break – Generator Ofertă</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brown: #1a0f0a;
+    --orange: #e8610a;
+    --cream: #f5efe6;
+    --warm-white: #faf7f2;
+    --text-dark: #1a0f0a;
+    --text-mid: #4a3728;
+    --border: #d4c4b0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--brown);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+  }
+
+  .header { text-align: center; margin-bottom: 32px; }
+
+  .logo-wrap {
+    background: var(--cream);
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+
+  .logo-wrap .logo-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--brown);
+    line-height: 1;
+    letter-spacing: 2px;
+  }
+
+  .logo-wrap .logo-sub {
+    font-size: 11px;
+    color: var(--orange);
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-subtitle { color: #b89a7a; font-size: 14px; font-weight: 300; letter-spacing: 1px; }
+
+  .card {
+    background: var(--warm-white);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 620px;
+    padding: 36px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .field-group.full { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; }
+
+  label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+  }
+
+  input, select {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-dark);
+    background: white;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(232,97,10,0.12);
+  }
+
+  .divider { height: 1.5px; background: var(--border); margin: 24px 0; }
+
+  .info-box {
+    background: rgba(232,97,10,0.08);
+    border-left: 3px solid var(--orange);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.5;
+  }
+
+  .info-box strong { color: var(--orange); }
+
+  .btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+  }
+
+  .btn-submit:hover {
+    background: #c45208;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(232,97,10,0.4);
+  }
+
+  .result-card {
+    background: var(--warm-white);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 620px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    overflow: hidden;
+    display: none;
+  }
+
+  .result-header { padding: 28px 36px 22px; }
+  .result-header.baza { background: var(--brown); }
+  .result-header.horeca { background: #1a2b1a; }
+
+  .result-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  .result-badge.baza { background: var(--orange); color: white; }
+  .result-badge.horeca { background: #4a7c4a; color: white; }
+
+  .result-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--cream);
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+
+  .result-subtitle { color: #b89a7a; font-size: 13px; margin-top: 6px; }
+  .result-body { padding: 28px 36px; }
+
+  .client-info {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+
+  .client-info h4 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 10px;
+  }
+
+  .client-info p { font-size: 13px; color: var(--text-mid); line-height: 1.7; }
+  .client-info strong { color: var(--text-dark); }
+
+  .products-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--text-dark);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+
+  .product-category { margin-bottom: 16px; }
+
+  .product-category h5 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--orange);
+    background: rgba(232,97,10,0.08);
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .product-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .product-row:last-child { border-bottom: none; }
+  .product-name { color: var(--text-dark); font-weight: 500; flex: 1; }
+  .product-weight { color: #999; font-size: 11px; margin: 0 12px; }
+  .product-price { font-weight: 700; color: var(--orange); font-size: 14px; white-space: nowrap; }
+
+  .btn-back {
+    width: 100%;
+    padding: 13px;
+    background: transparent;
+    color: var(--text-mid);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.2s;
+  }
+
+  .btn-back:hover { border-color: var(--orange); color: var(--orange); }
+
+  .note-box {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  .note-box strong { color: var(--text-dark); }
+
+  .footer-note {
+    color: #6b4f38;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 20px;
+    letter-spacing: 1px;
+  }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .result-card { box-shadow: none; }
+    .btn-back, .btn-submit { display: none; }
+    .result-header.baza { background: #1a0f0a !important; -webkit-print-color-adjust: exact; }
+    .result-header.horeca { background: #1a2b1a !important; -webkit-print-color-adjust: exact; }
+  }
+
+  @media (max-width: 480px) {
+    .field-group { grid-template-columns: 1fr; }
+    .card, .result-body, .result-header { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo-wrap">
+    <div class="logo-title">SANDWICH<br>BREAK</div>
+    <div class="logo-sub">Catalog de Produse</div>
+  </div>
+  <div class="header-subtitle">Completați datele pentru a genera oferta personalizată</div>
+</div>
+
+<!-- FORMULAR -->
+<div class="card" id="formCard">
+
+  <div class="section-title">📋 Date Societate</div>
+
+  <div class="field-group full">
+    <div class="field">
+      <label>Denumire Societate *</label>
+      <input type="text" id="denumire" placeholder="S.C. Exemplu S.R.L." />
+    </div>
+  </div>
+
+  <div class="field-group">
+    <div class="field">
+      <label>Cod Fiscal (CIF) *</label>
+      <input type="text" id="cif" placeholder="RO12345678" />
+    </div>
+    <div class="field">
+      <label>Număr de Contact *</label>
+      <input type="tel" id="telefon" placeholder="07XX XXX XXX" />
+    </div>
+  </div>
+
+  <div class="field-group">
+    <div class="field">
+      <label>Oră Deschidere *</label>
+      <input type="time" id="oraDesc" value="09:00" />
+    </div>
+    <div class="field" style="visibility:hidden"></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">📍 Adresă Livrare</div>
+
+  <div class="field-group full">
+    <div class="field">
+      <label>Adresă Stradă *</label>
+      <input type="text" id="adresa" placeholder="Str. Exemplu nr. 10, Bl. A, Ap. 5" />
+    </div>
+  </div>
+
+  <div class="field-group">
+    <div class="field">
+      <label>Localitate *</label>
+      <input type="text" id="localitate" placeholder="București / Cluj-Napoca" />
+    </div>
+    <div class="field">
+      <label>Județ *</label>
+      <select id="judet">
+        <option value="">-- Selectați Județul --</option>
+        <option value="Sectorul 1">Sector 1 (București)</option>
+        <option value="Sectorul 2">Sector 2 (București)</option>
+        <option value="Sectorul 3">Sector 3 (București)</option>
+        <option value="Sectorul 4">Sector 4 (București)</option>
+        <option value="Sectorul 5">Sector 5 (București)</option>
+        <option value="Sectorul 6">Sector 6 (București)</option>
+        <option value="Alba">Alba</option>
+        <option value="Arad">Arad</option>
+        <option value="Argeș">Argeș</option>
+        <option value="Bacău">Bacău</option>
+        <option value="Bihor">Bihor</option>
+        <option value="Bistrița-Năsăud">Bistrița-Năsăud</option>
+        <option value="Botoșani">Botoșani</option>
+        <option value="Brașov">Brașov</option>
+        <option value="Brăila">Brăila</option>
+        <option value="Buzău">Buzău</option>
+        <option value="Caraș-Severin">Caraș-Severin</option>
+        <option value="Călărași">Călărași</option>
+        <option value="Cluj">Cluj</option>
+        <option value="Constanța">Constanța</option>
+        <option value="Covasna">Covasna</option>
+        <option value="Dâmbovița">Dâmbovița</option>
+        <option value="Dolj">Dolj</option>
+        <option value="Galați">Galați</option>
+        <option value="Giurgiu">Giurgiu</option>
+        <option value="Gorj">Gorj</option>
+        <option value="Harghita">Harghita</option>
+        <option value="Hunedoara">Hunedoara</option>
+        <option value="Ialomița">Ialomița</option>
+        <option value="Iași">Iași</option>
+        <option value="Ilfov">Ilfov</option>
+        <option value="Maramureș">Maramureș</option>
+        <option value="Mehedinți">Mehedinți</option>
+        <option value="Mureș">Mureș</option>
+        <option value="Neamț">Neamț</option>
+        <option value="Olt">Olt</option>
+        <option value="Prahova">Prahova</option>
+        <option value="Satu Mare">Satu Mare</option>
+        <option value="Sălaj">Sălaj</option>
+        <option value="Sibiu">Sibiu</option>
+        <option value="Suceava">Suceava</option>
+        <option value="Teleorman">Teleorman</option>
+        <option value="Timiș">Timiș</option>
+        <option value="Tulcea">Tulcea</option>
+        <option value="Vaslui">Vaslui</option>
+        <option value="Vâlcea">Vâlcea</option>
+        <option value="Vrancea">Vrancea</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="section-title">📦 Volum Estimat</div>
+
+  <div class="info-box">
+    Comanda minimă este de <strong>25 produse / livrare</strong>. Selectați volumul estimat pentru a primi oferta corespunzătoare tipului dumneavoastră de activitate.
+  </div>
+
+  <div class="field-group full">
+    <div class="field">
+      <label>Produse estimate per livrare *</label>
+      <select id="volum">
+        <option value="">-- Selectați volumul --</option>
+        <option value="sub25">Sub 25 produse (nu se acceptă)</option>
+        <option value="25-50">25–49 produse</option>
+        <option value="peste50">50+ produse</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn-submit" onclick="genereazaOferta()">GENEREAZĂ OFERTA →</button>
+</div>
+
+<!-- REZULTAT -->
+<div class="result-card" id="resultCard">
+  <div class="result-header" id="resultHeader">
+    <div class="result-badge" id="resultBadge"></div>
+    <div class="result-title" id="resultTitle"></div>
+    <div class="result-subtitle" id="resultSubtitle"></div>
+  </div>
+  <div class="result-body">
+    <div class="client-info">
+      <h4>Date Client</h4>
+      <p id="clientInfo"></p>
+    </div>
+
+    <div class="products-title">🥪 PRODUSE ȘI PREȚURI</div>
+    <div id="productsContainer"></div>
+
+    <div class="note-box" id="noteBox"></div>
+
+    <button class="btn-back" onclick="inapoiLaFormular()">← Modifică datele</button>
+    <button class="btn-submit" style="margin-top:12px" onclick="window.print()">🖨️ PRINTEAZĂ / SALVEAZĂ PDF</button>
+  </div>
+</div>
+
+<div class="footer-note">www.sandwich-break.ro &nbsp;|&nbsp; hand made with love &nbsp;|&nbsp; PRODUS ÎN ROMÂNIA</div>
+
+<script>
+const OFERTA_BAZA = {
+  panini: [
+    { name: "Snitel Vienez cu Sos Remulade", weight: "185g", price: "7,45 lei" },
+    { name: "Pui Shanghai", weight: "180g", price: "7,45 lei" },
+    { name: "Pui Grill", weight: "170g", price: "7,45 lei" },
+    { name: "Friptura de Porc", weight: "185g", price: "7,45 lei" },
+    { name: "Porky Blinder", weight: "185g", price: "6,77 lei" },
+    { name: "Sunca si Cascaval", weight: "165g", price: "6,77 lei" },
+    { name: "Muschi File si Mozzarella", weight: "165g", price: "6,77 lei" },
+    { name: "Country Club", weight: "185g", price: "6,77 lei" },
+    { name: "Salam de Sibiu", weight: "155g", price: "7,45 lei" },
+    { name: "Branza de Capra (vegetarian)", weight: "175g", price: "7,45 lei" },
+  ],
+  ciabatta: [
+    { name: "Pulled Pork BBQ Coleslaw", weight: "210g", price: "7,45 lei" },
+    { name: "Cotlet Haiducesc", weight: "180g", price: "7,45 lei" },
+    { name: "Curcan si Cascaval Afumat", weight: "190g", price: "7,45 lei" },
+    { name: "Bacon, Mozzarella si Pesto (NOU)", weight: "185g", price: "7,45 lei" },
+  ],
+  croissant: [
+    { name: "Curcan si Cascaval Afumat", weight: "160g", price: "7,45 lei" },
+  ],
+  lipie: [
+    { name: "Pui Auriu cu Salata Crocanta", weight: "260g", price: "9,15 lei" },
+    { name: "Frigarui Tailandeze", weight: "260g", price: "9,15 lei" },
+    { name: "Pui Picant", weight: "260g", price: "9,15 lei" },
+    { name: "Bacon si Mozzarella", weight: "260g", price: "9,15 lei" },
+    { name: "Pui Shanghai si Sos Tartar", weight: "260g", price: "9,15 lei" },
+    { name: "Falafel (vegan)", weight: "260g", price: "9,15 lei" },
+  ],
+  burgeri: [
+    { name: "Burger Mix cu Branza Cheddar si Ceapa Caramelizata", weight: "", price: "9,15 lei" },
+    { name: "Burger de Pui cu Branza Cheddar si Sos Special", weight: "", price: "7,45 lei" },
+  ],
+  mini: [
+    { name: "Mini Pui Shanghai", weight: "120g", price: "4,72 lei" },
+    { name: "Mini Country Club", weight: "105g", price: "4,72 lei" },
+    { name: "Mini Muschi File", weight: "105g", price: "4,72 lei" },
+    { name: "Mini Sunca si Cascaval", weight: "110g", price: "4,72 lei" },
+  ],
+  salate: [
+    { name: "Salata cu Branza de Capra", weight: "250g", price: "18,17 lei" },
+    { name: "Salata Caesar", weight: "250g", price: "18,17 lei" },
+    { name: "Salata cu Ton", weight: "250g", price: "18,17 lei" },
+  ]
+};
+
+const OFERTA_HORECA = {
+  panini: [
+    { name: "Snitel Vienez cu Sos Remulade", weight: "185g", price: "7,82 lei" },
+    { name: "Pui Shanghai", weight: "180g", price: "7,82 lei" },
+    { name: "Pui Grill", weight: "170g", price: "7,82 lei" },
+    { name: "Friptura de Porc", weight: "185g", price: "7,82 lei" },
+    { name: "Porky Blinder", weight: "185g", price: "7,82 lei" },
+    { name: "Sunca si Cascaval", weight: "165g", price: "7,82 lei" },
+    { name: "Muschi File si Mozzarella", weight: "165g", price: "7,82 lei" },
+    { name: "Country Club", weight: "185g", price: "7,82 lei" },
+    { name: "Salam de Sibiu", weight: "155g", price: "7,82 lei" },
+    { name: "Branza de Capra (vegetarian)", weight: "175g", price: "7,82 lei" },
+  ],
+  ciabatta: [
+    { name: "Pulled Pork BBQ Coleslaw", weight: "210g", price: "7,82 lei" },
+    { name: "Cotlet Haiducesc", weight: "180g", price: "7,82 lei" },
+    { name: "Curcan si Cascaval Afumat", weight: "190g", price: "7,82 lei" },
+    { name: "Bacon, Mozzarella si Pesto (NOU)", weight: "185g", price: "7,82 lei" },
+  ],
+  croissant: [
+    { name: "Curcan si Cascaval Afumat", weight: "160g", price: "7,82 lei" },
+  ],
+  lipie: [
+    { name: "Pui Auriu cu Salata Crocanta", weight: "260g", price: "9,60 lei" },
+    { name: "Frigarui Tailandeze", weight: "260g", price: "9,60 lei" },
+    { name: "Pui Picant", weight: "260g", price: "9,60 lei" },
+    { name: "Bacon si Mozzarella", weight: "260g", price: "9,60 lei" },
+    { name: "Pui Shanghai si Sos Tartar", weight: "260g", price: "9,60 lei" },
+    { name: "Falafel (vegan)", weight: "260g", price: "9,60 lei" },
+  ],
+  burgeri: [
+    { name: "Burger Mix cu Branza Cheddar si Ceapa Caramelizata", weight: "", price: "9,60 lei" },
+    { name: "Burger de Pui cu Branza Cheddar si Sos Special", weight: "", price: "7,82 lei" },
+  ],
+  mini: [
+    { name: "Mini Pui Shanghai", weight: "120g", price: "5,31 lei" },
+    { name: "Mini Country Club", weight: "105g", price: "5,31 lei" },
+    { name: "Mini Muschi File", weight: "105g", price: "5,31 lei" },
+    { name: "Mini Sunca si Cascaval", weight: "110g", price: "5,31 lei" },
+  ],
+  salate: [
+    { name: "Salata cu Branza de Capra", weight: "250g", price: "19,81 lei" },
+    { name: "Salata Caesar", weight: "250g", price: "19,81 lei" },
+    { name: "Salata cu Ton", weight: "250g", price: "19,81 lei" },
+  ]
+};
+
+const CATEGORIE_LABELS = {
+  panini: "🥖 Sandwich-uri Panini",
+  ciabatta: "🫓 Sandwich-uri Ciabatta",
+  croissant: "🥐 Sandwich Croissant",
+  lipie: "🌯 Sandwich-uri în Lipie Libaneză",
+  burgeri: "🍔 Burgeri",
+  mini: "🥪 Sandwich-uri Mini",
+  salate: "🥗 Salate Proaspete"
+};
+
+function esteBucuresti(judet, localitate) {
+  const judBuc = judet && judet.toLowerCase().includes("sector");
+  const locBuc = localitate && (
+    localitate.toLowerCase().includes("bucuresti") ||
+    localitate.toLowerCase().includes("bucurești")
+  );
+  return judBuc || locBuc;
+}
+
+function genereazaOferta() {
+  const denumire = document.getElementById('denumire').value.trim();
+  const cif = document.getElementById('cif').value.trim();
+  const telefon = document.getElementById('telefon').value.trim();
+  const adresa = document.getElementById('adresa').value.trim();
+  const localitate = document.getElementById('localitate').value.trim();
+  const judet = document.getElementById('judet').value;
+  const oraDesc = document.getElementById('oraDesc').value;
+  const volum = document.getElementById('volum').value;
+
+  if (!denumire || !cif || !telefon || !adresa || !localitate || !judet || !volum) {
+    alert('Vă rugăm completați toate câmpurile obligatorii!');
+    return;
+  }
+
+  if (volum === 'sub25') {
+    alert('Ne pare rău! Comanda minimă este de 25 produse / livrare. Nu putem procesa comenzi sub acest prag.');
+    return;
+  }
+
+  const inBucuresti = esteBucuresti(judet, localitate);
+  const peste50 = volum === 'peste50';
+  const tipOferta = (inBucuresti && peste50) ? 'baza' : 'horeca';
+  const produse = tipOferta === 'baza' ? OFERTA_BAZA : OFERTA_HORECA;
+
+  const header = document.getElementById('resultHeader');
+  const badge = document.getElementById('resultBadge');
+  const title = document.getElementById('resultTitle');
+  const subtitle = document.getElementById('resultSubtitle');
+
+  header.className = 'result-header ' + tipOferta;
+  badge.className = 'result-badge ' + tipOferta;
+
+  if (tipOferta === 'baza') {
+    badge.textContent = '✓ OFERTĂ BAZĂ';
+    title.textContent = 'Ofertă Partener Standard';
+    subtitle.textContent = 'Prețuri preferențiale pentru parteneri din București cu comenzi 50+ produse';
+  } else {
+    badge.textContent = '✓ OFERTĂ HORECA';
+    title.textContent = 'Ofertă HoReCa';
+    subtitle.textContent = 'Prețuri adaptate pentru parteneri HoReCa sau livrări în afara Bucureștiului';
+  }
+
+  const volumText = volum === '25-50' ? '25–49 produse/livrare' : '50+ produse/livrare';
+  document.getElementById('clientInfo').innerHTML = `
+    <strong>${denumire}</strong><br>
+    CIF: ${cif}<br>
+    Telefon de contact: ${telefon}<br>
+    Adresă livrare: ${adresa}, ${localitate}, ${judet}<br>
+    Oră deschidere: ${oraDesc}<br>
+    Volum estimat: ${volumText}
+  `;
+
+  let html = '';
+  for (const [cat, items] of Object.entries(produse)) {
+    html += `<div class="product-category"><h5>${CATEGORIE_LABELS[cat]}</h5>`;
+    items.forEach(p => {
+      html += `<div class="product-row">
+        <span class="product-name">${p.name}</span>
+        <span class="product-weight">${p.weight}</span>
+        <span class="product-price">${p.price} cu TVA</span>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+  document.getElementById('productsContainer').innerHTML = html;
+
+  const motiv = tipOferta === 'baza'
+    ? 'Ați primit <strong>Oferta Bază</strong> deoarece livrați în București și estimați 50+ produse/livrare.'
+    : (inBucuresti
+        ? 'Ați primit <strong>Oferta HoReCa</strong> deoarece estimați între 25–49 produse/livrare.'
+        : 'Ați primit <strong>Oferta HoReCa</strong> deoarece adresa de livrare este în afara Bucureștiului.');
+
+  document.getElementById('noteBox').innerHTML = `
+    ℹ️ ${motiv}<br><br>
+    <strong>Comandă minimă:</strong> 25 produse / livrare &nbsp;|&nbsp;
+    <strong>Livrare:</strong> Luni–Vineri &nbsp;|&nbsp;
+    <strong>Telefon:</strong> 0769 737 205 / 0784 263 601
+  `;
+
+  document.getElementById('formCard').style.display = 'none';
+  document.getElementById('resultCard').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function inapoiLaFormular() {
+  document.getElementById('formCard').style.display = 'block';
+  document.getElementById('resultCard').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
